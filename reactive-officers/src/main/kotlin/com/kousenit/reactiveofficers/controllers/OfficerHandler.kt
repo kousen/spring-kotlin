@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.server.body
 
 @Component
 class OfficerHandler(private val repository: OfficerRepository) {
+
     fun listOfficers(request: ServerRequest) =
             ServerResponse.ok()
                     .contentType(MediaType.APPLICATION_JSON)
@@ -32,5 +33,5 @@ class OfficerHandler(private val repository: OfficerRepository) {
 
     fun deleteOfficer(request: ServerRequest) =
             repository.deleteById(request.pathVariable("id"))
-                    .flatMap { noContent().build() }
+                    .flatMap { ServerResponse.noContent().build() }
 }

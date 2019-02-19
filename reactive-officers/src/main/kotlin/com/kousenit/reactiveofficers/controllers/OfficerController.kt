@@ -27,7 +27,7 @@ class OfficerController(val repository: OfficerRepository) {
                     existingOfficer.rank = officer.rank
                     existingOfficer.first = officer.first
                     existingOfficer.last = officer.last
-                    repository.save(existingOfficer)
+                    return@flatMap repository.save(existingOfficer)
                 }
                 .map { ResponseEntity(it, HttpStatus.OK) }
                 .defaultIfEmpty(ResponseEntity(HttpStatus.NOT_FOUND))

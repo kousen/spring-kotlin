@@ -18,6 +18,8 @@ class OfficerInit(val repository: OfficerRepository) : ApplicationRunner {
                         Officer(rank = Rank.CAPTAIN, first = "Kathryn", last = "Janeway"),
                         Officer(rank = Rank.CAPTAIN, first = "Jonathan", last = "Archer")))
                 .flatMap { repository.save(it) }
-                .subscribe { println(it) }
+                .then()
+                .doOnEach { println(it) }
+                .block()
     }
 }
