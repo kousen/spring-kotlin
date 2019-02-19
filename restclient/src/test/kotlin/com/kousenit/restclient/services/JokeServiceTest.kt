@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import reactor.test.StepVerifier
+import java.time.Duration
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -21,5 +23,27 @@ class JokeServiceTest() {
         logger.info(joke)
         assert(joke.contains("Craig") || joke.contains("Walls") ||
             joke.contains("No joke returned"))
+    }
+
+    @Test
+    fun `asyc joke function returns Mono of type String`() {
+        val joke = service.getJokeAsync("Matt", "Stine")
+                .block(Duration.ofSeconds(2))
+        logger.info(joke)
+        if (joke != null) {
+            assert(joke.contains("Matt") || joke.contains("Stine") ||
+                    joke.contains("No joke returned"))
+        }
+    }
+
+    @Test
+    fun `verify async joke function using StepVerifier`() {
+        StepVerifier.create(service.getJokeAsync("Nate","Schutta"))
+                .assertNext { joke ->
+                    logger.info(joke)
+                    assert(joke.contains("Nate") || joke.contains("Schutta") ||
+                            joke.contains("No joke returned"))
+                }
+                .verifyComplete()
     }
 }
