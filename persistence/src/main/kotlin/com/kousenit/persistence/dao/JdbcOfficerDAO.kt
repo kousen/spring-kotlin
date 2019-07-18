@@ -12,7 +12,7 @@ import java.util.*
 
 @Suppress("SqlResolve", "SqlNoDataSourceInspection")
 @Repository
-class JdbcOfficerDAO(val jdbcTemplate: JdbcTemplate) : OfficerDAO {
+class JdbcOfficerDAO(private final val jdbcTemplate: JdbcTemplate) : OfficerDAO {
 
     private val insertOfficer = SimpleJdbcInsert(jdbcTemplate)
             .withTableName("officers")

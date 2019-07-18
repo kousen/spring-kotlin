@@ -24,7 +24,7 @@ class JpaOfficerDAO(@PersistenceContext val entityManager: EntityManager) : Offi
 
     override fun count() =
             entityManager.createQuery("select count(o) from Officer o")
-                    .singleResult as Long
+                    .singleResult as? Long ?: 0
 
 
     override fun delete(officer: Officer) =
@@ -34,5 +34,5 @@ class JpaOfficerDAO(@PersistenceContext val entityManager: EntityManager) : Offi
         entityManager.createQuery(
                 "SELECT 1 from Officer o where o.id=:id")
                 .setParameter("id", id)
-                .getSingleResult() != null
+                .singleResult != null
 }
