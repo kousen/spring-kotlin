@@ -4,20 +4,15 @@ import com.kousenit.persistence.entities.Officer
 import com.kousenit.persistence.entities.Rank
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsInAnyOrder
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.transaction.annotation.Transactional
 
 @Suppress("SqlResolve", "SqlNoDataSourceInspection")
 @SpringBootTest
-@RunWith(SpringRunner::class)
 @Transactional
 class OfficerRepositoryTests {
 

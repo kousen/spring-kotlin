@@ -4,15 +4,12 @@ import com.kousenit.persistence.entities.Officer
 import com.kousenit.persistence.entities.Rank
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsInAnyOrder
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.transaction.annotation.Transactional
 
-@RunWith(SpringRunner::class)
 @SpringBootTest
 @Transactional
 class JdbcOfficerDAOTests {
