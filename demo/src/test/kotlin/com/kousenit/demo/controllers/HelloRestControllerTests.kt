@@ -22,7 +22,7 @@ class HelloRestControllerTests(@Autowired val template: TestRestTemplate) {
 
         assert(entity.statusCode == HttpStatus.OK)
         entity.headers.contentType?.let {
-            assert(it.equals(MediaType.APPLICATION_JSON_UTF8))
+            assert(it.equals(MediaType.APPLICATION_JSON))
         }
         assert(entity.body?.message == "Hello, World!")
     }

@@ -3,9 +3,8 @@ package com.kousenit.reactiveofficers.controllers
 import com.kousenit.reactiveofficers.dao.OfficerRepository
 import com.kousenit.reactiveofficers.entities.Officer
 import com.kousenit.reactiveofficers.entities.Rank
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -15,7 +14,6 @@ import org.springframework.test.web.reactive.server.body
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-@RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OfficerHandlerAndRouterTest {
     @Autowired
@@ -31,7 +29,7 @@ class OfficerHandlerAndRouterTest {
             Officer(Rank.CAPTAIN, "Kathryn", "Janeway"),
             Officer(Rank.CAPTAIN, "Jonathan", "Archer"))
 
-    @Before
+    @BeforeEach
     fun setUp() {
         repository.deleteAll()
                 .thenMany(Flux.fromIterable(officers))
@@ -65,8 +63,8 @@ class OfficerHandlerAndRouterTest {
         val officer = Officer(Rank.LIEUTENANT, "Hikaru", "Sulu")
 
         client.post().uri("/route")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(officer))
                 .exchange()
                 .expectStatus().isCreated
