@@ -2,16 +2,13 @@ package com.kousenit.reactiveofficers.dao
 
 import com.kousenit.reactiveofficers.entities.Officer
 import com.kousenit.reactiveofficers.entities.Rank
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 
-@RunWith(SpringRunner::class)
 @SpringBootTest
 class OfficerRepositoryTests {
 
@@ -25,7 +22,7 @@ class OfficerRepositoryTests {
             Officer(Rank.CAPTAIN, "Kathryn", "Janeway"),
             Officer(Rank.CAPTAIN, "Jonathan", "Archer"))
 
-    @Before
+    @BeforeEach
     fun setUp() {
         repository.deleteAll()
                 .thenMany(Flux.fromIterable(officers))
