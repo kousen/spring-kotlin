@@ -6,10 +6,8 @@ import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
-@Suppress("JpaQlInspection")
 @Repository
 class JpaOfficerDAO(@PersistenceContext val entityManager: EntityManager) : OfficerDAO {
-
     override fun save(officer: Officer): Officer {
         entityManager.persist(officer)
         return officer
@@ -24,15 +22,13 @@ class JpaOfficerDAO(@PersistenceContext val entityManager: EntityManager) : Offi
 
     override fun count() =
             entityManager.createQuery("select count(o) from Officer o")
-                    .singleResult as? Long ?: 0
+                    .singleResult as Long
 
-
-    override fun delete(officer: Officer) =
-            entityManager.remove(officer)
+    override fun delete(officer: Officer) = entityManager.remove(officer)
 
     override fun existsById(id: Int) =
-        entityManager.createQuery(
-                "SELECT 1 from Officer o where o.id=:id")
-                .setParameter("id", id)
-                .singleResult != null
+            entityManager.createQuery(
+                            "SELECT 1 from Officer o where o.id=:id")
+                    .setParameter("id", id)
+                    .singleResult != null
 }

@@ -10,13 +10,8 @@ import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.util.*
 
-@Suppress("SqlResolve", "SqlNoDataSourceInspection")
 @Repository
-class JdbcOfficerDAO(private final val jdbcTemplate: JdbcTemplate) : OfficerDAO {
-
-    private val insertOfficer = SimpleJdbcInsert(jdbcTemplate)
-            .withTableName("officers")
-            .usingGeneratedKeyColumns("id")
+class JdbcOfficerDAO(private val jdbcTemplate: JdbcTemplate) : OfficerDAO {
 
     private val officerMapper = RowMapper { rs: ResultSet, _ ->
         Officer(id = rs.getInt("id"),
@@ -25,41 +20,38 @@ class JdbcOfficerDAO(private final val jdbcTemplate: JdbcTemplate) : OfficerDAO 
                 last = rs.getString("last_name"))
     }
 
-    override fun save(officer: Officer): Officer {
-        val key = insertOfficer.executeAndReturnKey(
-                mapOf("rank" to officer.rank,
-                        "first_name" to officer.first,
-                        "last_name" to officer.last)) as Int
-
-        officer.id = key
-        return officer
-    }
-
-    override fun findById(id: Int): Optional<Officer> {
-        if (!existsById(id)) return Optional.empty()
-        return Optional.ofNullable(
-                jdbcTemplate.queryForObject("SELECT * FROM officers WHERE id=?",
-                        officerMapper, id))
-    }
-
-    override fun findAll(): List<Officer> =
-            jdbcTemplate.query("SELECT * FROM officers") { rs: ResultSet, _ ->
-                Officer(id = rs.getInt("id"),
-                        rank = Rank.valueOf(rs.getString("rank")),
-                        first = rs.getString("first_name"),
-                        last = rs.getString("last_name"))
-            }
+    private val insertOfficer = SimpleJdbcInsert(jdbcTemplate)
+            .withTableName("officers")
+            .usingGeneratedKeyColumns("id")
 
     override fun count() =
-            jdbcTemplate.queryForObject<Long>("select count(*) from officers") ?: 0
+            jdbcTemplate.queryForObject<Long>("select count(*) from officers")
 
     override fun delete(officer: Officer) {
-        if (officer.id == null) return
-        jdbcTemplate.update("DELETE FROM officers WHERE id=?", officer.id)
+        jdbcTemplate.update("delete from officers where id=?", officer.id)
     }
 
     override fun existsById(id: Int) =
             jdbcTemplate.queryForObject(
-                    "SELECT EXISTS(SELECT 1 FROM officers where id=?)",
+                    "select exists(select 1 from officers where id=?)",
                     Boolean::class.java, id)
+
+    override fun findById(id: Int)=
+            if (!existsById(id)) Optional.empty() else
+                jdbcTemplate.queryForObject("SELECT * FROM officers WHERE id=?",
+                        officerMapper, id)?.let { Optional.of(it) } ?: Optional.empty()
+
+    override fun findAll(): List<Officer> =
+            jdbcTemplate.query<Officer>("select * from officers", officerMapper)
+
+    override fun save(officer: Officer) =
+            insertOfficer.executeAndReturnKey(
+                            mapOf("rank" to officer.rank,
+                                    "first_name" to officer.first,
+                                    "last_name" to officer.last))
+                    .let {
+                        officer.id = it.toInt()
+                        officer
+                    }
+
 }
