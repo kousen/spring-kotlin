@@ -1,31 +1,36 @@
 package com.kousenit.demo.controllers
 
-import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.get
 
 @WebMvcTest(HelloController::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HelloControllerMockMVCTests(@Autowired val mvc: MockMvc) {
+class HelloControllerMockMVCTests(@Autowired val mockMvc: MockMvc) {
     @Test
-    internal fun `get hello without name`() {
-        mvc.perform(get("/hello").accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk)
-                .andExpect(view().name("hello"))
-                .andExpect(model().attribute("user", `is`("World")))
+    internal fun `check sayHello without name`() {
+        mockMvc.get("/hello") {
+            accept = MediaType.TEXT_PLAIN
+        }.andExpect {
+            status { isOk }
+            view { name("hello") }
+            model { attribute("user", "World") }
+        }
     }
 
     @Test
-    internal fun `get hello with name`() {
-        mvc.perform(get("/hello").param("name","Dolly").accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("hello"))
-                .andExpect(model().attribute("user", `is`("Dolly")))
+    internal fun `check sayHello with name`() {
+        mockMvc.get("/hello") {
+            accept = MediaType.TEXT_PLAIN
+            param("name", "Dolly")
+        }.andExpect {
+            status { isOk }
+            view { name("hello") }
+            model { attribute("user", "Dolly") }
+        }
     }
 }

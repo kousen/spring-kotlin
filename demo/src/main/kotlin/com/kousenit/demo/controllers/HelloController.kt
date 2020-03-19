@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 class HelloController {
     @GetMapping("/hello")
-    fun sayHello(@RequestParam(required = false, defaultValue = "World") name: String,
+    fun sayHello(@RequestParam(required = false,
+            defaultValue = "World") name: String = "World",
             model: Model): String {
         model["user"] = name
         return "hello"
