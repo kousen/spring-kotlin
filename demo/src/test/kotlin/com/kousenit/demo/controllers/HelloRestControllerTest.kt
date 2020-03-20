@@ -1,5 +1,6 @@
 package com.kousenit.demo.controllers
 
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,16 +17,18 @@ internal class HelloRestControllerTest(@Autowired val template: TestRestTemplate
     fun `greet without name should return 'Hello, World!'`() {
         val entity = template.getForEntity<Greeting>("/rest")
 
-        assert(entity.statusCode == HttpStatus.OK)
+        assertEquals(HttpStatus.OK, entity.statusCode)
+
         entity.headers.contentType?.let {
-            assert(it.equals(MediaType.APPLICATION_JSON))
-        }
-        assert(entity.body?.message == "Hello, World!")
+            assertTrue(it == MediaType.APPLICATION_JSON)
+        } ?: fail("Content type header not application/json")
+
+        assertEquals("Hello, World!", entity.body?.message)
     }
 
     @Test
     fun `greet with Dolly returns 'Hello, Dolly!'`() {
         val greeting = template.getForObject<Greeting>("/rest?name=Dolly")
-        assert(greeting?.message == "Hello, Dolly!")
+        assertEquals("Hello, Dolly!", greeting?.message)
     }
 }
