@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 class HelloRestController {
 
     @GetMapping("/rest")
-    fun greet(@RequestParam(required = false,
-            defaultValue = "World") name: String) : Greeting =
-            Greeting("Hello, $name!")
+    fun greet(@RequestParam(required = false, defaultValue = "World")
+              name: String) = Greeting("Hello, $name!")
 }
 
 data class Greeting(val message: String)
