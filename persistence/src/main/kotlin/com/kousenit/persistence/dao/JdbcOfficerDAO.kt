@@ -32,14 +32,15 @@ class JdbcOfficerDAO(private val jdbcTemplate: JdbcTemplate) : OfficerDAO {
     }
 
     override fun existsById(id: Int) =
-            jdbcTemplate.queryForObject(
+            jdbcTemplate.queryForObject<Boolean>(
                     "select exists(select 1 from officers where id=?)",
-                    Boolean::class.java, id)
+                    id) { rs, _ -> rs.getBoolean(1) }
 
-    override fun findById(id: Int)=
+    override fun findById(id: Int) =
             if (!existsById(id)) Optional.empty() else
-                jdbcTemplate.queryForObject("SELECT * FROM officers WHERE id=?",
-                        officerMapper, id)?.let { Optional.of(it) } ?: Optional.empty()
+                Optional.ofNullable(
+                        jdbcTemplate.queryForObject("SELECT * FROM officers WHERE id=?",
+                                officerMapper, id))
 
     override fun findAll(): List<Officer> =
             jdbcTemplate.query<Officer>("select * from officers", officerMapper)

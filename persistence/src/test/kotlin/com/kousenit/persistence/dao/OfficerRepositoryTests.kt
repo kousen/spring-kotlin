@@ -76,17 +76,4 @@ class OfficerRepositoryTests {
             assert(dao.existsById(id))
         }
     }
-
-    @Test
-    fun `there are five captains in the sample db`() {
-        val captains = dao.findAllByRank(Rank.CAPTAIN)
-        assert(captains.size == 5)
-    }
-
-    @Test
-    fun `captains with last names containing i`() {
-        val lastNames = dao.findAllByLastLikeAndRankEquals("%i%", Rank.CAPTAIN)
-                .map { it.last }
-        assertThat(lastNames, containsInAnyOrder("Kirk", "Picard", "Sisko"))
-    }
 }
