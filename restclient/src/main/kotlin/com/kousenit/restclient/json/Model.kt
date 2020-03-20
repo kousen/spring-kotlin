@@ -17,7 +17,6 @@ data class Result(val formattedAddress: String,
 
 data class Response(val status: String,
                     val results: List<Result>) {
-
     val location: Location
         get() = results[0].geometry.location
 

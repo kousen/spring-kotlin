@@ -7,10 +7,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.stereotype.Service
 import org.springframework.web.client.getForObject
 import java.net.URLEncoder
+import java.time.Duration
 
 @Service
 class GeocoderService(@Autowired builder: RestTemplateBuilder) {
-    private val restTemplate = builder.build()
+    private val restTemplate = builder
+            .setConnectTimeout(Duration.ofSeconds(2))
+            .build()
 
     companion object {
         const val BASE = "https://maps.googleapis.com/maps/api/geocode/json"

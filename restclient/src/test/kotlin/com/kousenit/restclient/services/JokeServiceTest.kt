@@ -1,5 +1,6 @@
 package com.kousenit.restclient.services
 
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.Logger
@@ -16,6 +17,6 @@ internal class JokeServiceTest(@Autowired val service: JokeService) {
     internal fun `joke using Craig Walls should have the words Craig or Walls`() {
         val joke = service.getJoke("Craig", "Walls")
         logger.info(joke)
-        assert(joke.contains("Craig") || joke.contains("Walls"))
+        assertTrue(joke.contains("Craig") || joke.contains("Walls"))
     }
 }
