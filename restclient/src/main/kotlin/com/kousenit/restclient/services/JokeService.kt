@@ -9,33 +9,34 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.getForObject
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
-import org.springframework.web.reactive.function.client.awaitExchange
 import java.time.Duration
 
 @Service
-class JokeService(@Autowired builder: RestTemplateBuilder,
-                @Autowired private val clientBuilder: WebClient.Builder) {
+class JokeService(
+    @Autowired builder: RestTemplateBuilder,
+    @Autowired private val clientBuilder: WebClient.Builder
+) {
     private val restTemplate = builder
-            .setConnectTimeout(Duration.ofSeconds(2))
-            .build()
+        .setConnectTimeout(Duration.ofSeconds(2))
+        .build()
 
     private val client = clientBuilder
-            .baseUrl("http://api.icndb.com/jokes/random")
-            .build()
+        .baseUrl("http://api.icndb.com/jokes/random")
+        .build()
 
     companion object {
         const val BASE = "http://api.icndb.com/jokes/random?limitTo=[nerdy]"
     }
 
     fun getJoke(first: String, last: String) =
-            restTemplate.getForObject<JokeResponse>("$BASE&firstName=$first&lastName=$last")
-                    .value.joke
+        restTemplate.getForObject<JokeResponse>("$BASE&firstName=$first&lastName=$last")
+            .value.joke
 
     suspend fun getJokeResponse(first: String, last: String) =
-            withContext(Dispatchers.IO) {
-                client.get()
-                        .uri("$BASE&firstName={first}&lastName={last}", first, last)
-                        .awaitExchange()
-                        .awaitBody<JokeResponse>()
-            }
+        withContext(Dispatchers.IO) {
+            client.get()
+                .uri("$BASE&firstName={first}&lastName={last}", first, last)
+                .retrieve()
+                .awaitBody<JokeResponse>()
+        }.value.joke
 }

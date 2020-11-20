@@ -1,5 +1,6 @@
 package com.kousenit.restclient.services
 
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -16,6 +17,13 @@ internal class JokeServiceTest(@Autowired val service: JokeService) {
     @Test
     internal fun `joke using Craig Walls should have the words Craig or Walls`() {
         val joke = service.getJoke("Craig", "Walls")
+        logger.info(joke)
+        assertTrue(joke.contains("Craig") || joke.contains("Walls"))
+    }
+
+    @Test
+    fun `jokeResponse using Craig Walls should have the words Craig or Walls`() = runBlocking<Unit> {
+        val joke = service.getJokeResponse("Craig", "Walls")
         logger.info(joke)
         assertTrue(joke.contains("Craig") || joke.contains("Walls"))
     }
