@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.client.getForObject
 import org.springframework.web.reactive.function.client.WebClient
@@ -36,6 +37,7 @@ class JokeService(
         withContext(Dispatchers.IO) {
             client.get()
                 .uri("$BASE&firstName={first}&lastName={last}", first, last)
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .awaitBody<JokeResponse>()
         }.value.joke
