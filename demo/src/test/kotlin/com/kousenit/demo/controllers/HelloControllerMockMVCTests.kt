@@ -16,7 +16,7 @@ class HelloControllerMockMVCTests(@Autowired val mockMvc: MockMvc) {
         mockMvc.get("/hello") {
             accept = MediaType.TEXT_PLAIN
         }.andExpect {
-            status { isOk }
+            status { isOk() }
             view { name("hello") }
             model { attribute("user", "World") }
         }
@@ -28,7 +28,7 @@ class HelloControllerMockMVCTests(@Autowired val mockMvc: MockMvc) {
             accept = MediaType.TEXT_PLAIN
             param("name", "Dolly")
         }.andExpect {
-            status { isOk }
+            status { isOk() }
             view { name("hello") }
             model { attribute("user", "Dolly") }
         }
