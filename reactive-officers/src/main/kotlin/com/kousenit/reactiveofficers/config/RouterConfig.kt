@@ -12,12 +12,10 @@ class RouterConfig {
     @Bean
     fun router(officerHandler: OfficerHandler) = router {
         accept(MediaType.APPLICATION_JSON).nest {
-            "/route".nest {
-                GET("/", officerHandler::listOfficers)
-                GET("/{id}", officerHandler::getOfficer)
-                POST("/", officerHandler::createOfficer)
-                DELETE("/{id}", officerHandler::deleteOfficer)
-            }
+            GET("/route", officerHandler::listOfficers)
+            GET("/route/{id}", officerHandler::getOfficer)
+            POST("/route", officerHandler::createOfficer)
+            DELETE("/route/{id}", officerHandler::deleteOfficer)
         }
     }
 }
