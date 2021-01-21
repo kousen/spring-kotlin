@@ -13,7 +13,7 @@ import java.util.*
 @Repository
 class JdbcOfficerDAO(private val jdbcTemplate: JdbcTemplate) : OfficerDAO {
 
-    private val officerMapper = RowMapper { rs: ResultSet, _ ->
+    private val officerMapper = RowMapper { rs: ResultSet, _: Int ->
         Officer(id = rs.getInt("id"),
                 rank = Rank.valueOf(rs.getString("rank")),
                 first = rs.getString("first_name"),
