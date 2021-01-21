@@ -1,9 +1,6 @@
 package com.kousenit.restclient.controllers
 
 import com.kousenit.restclient.services.JokeService
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
