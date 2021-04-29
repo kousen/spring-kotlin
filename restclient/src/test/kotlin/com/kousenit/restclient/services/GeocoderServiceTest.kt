@@ -27,7 +27,7 @@ internal class GeocoderServiceTest(@Autowired val service: GeocoderService) {
             service.getLatLng("1600 Ampitheatre Parkway", "Mountain View", "CA")
                     .also { logger.info(it.toString()) }
                     .run {
-                        assertThat(this.latitude, `is`(closeTo(37.42, 0.01)))
-                        assertThat(this.longitude, `is`(closeTo(-122.1, 0.02)))
+                        assertThat(this.latitude, `is`(closeTo(37.43, 0.01)))
+                        assertThat(this.longitude, `is`(closeTo(-122.08, 0.02)))
                     }
 }
